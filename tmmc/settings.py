@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
+
+env = Env() # new
+env.read_env() # new
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django.contrib.sites", # new
+    # Third-party
+    "crispy_forms", # new
+    "crispy_bootstrap5", # new
+    "allauth", # new
+    "allauth.account", # new
+    # Local
     'cstracking.apps.CstrackingConfig',
     "accounts.apps.AccountsConfig",
 ]
@@ -122,6 +133,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"] # new
+STATIC_ROOT = BASE_DIR / "staticfiles" # new
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage" # new
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -129,3 +143,24 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+# django_project/settings.py
+LOGIN_REDIRECT_URL = "home" # new
+ACCOUNT_LOGOUT_REDIRECT = "home" # new
+
+# django-crispy-forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5" # new
+CRISPY_TEMPLATE_PACK = "bootstrap5" # new
+
+# django-allauth config
+SITE_ID = 1 # new
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend", # new
+)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" # new
+
+ACCOUNT_SESSION_REMEMBER = True # new
+
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False # new
